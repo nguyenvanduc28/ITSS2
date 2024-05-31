@@ -1,0 +1,6 @@
+.nonescroll::-webkit-scrollbar{
+    display: none;
+}
+.nonescroll::-webkit-scrollbar-thumb{
+    display: none;
+}
