@@ -4,12 +4,9 @@ import { TextField, Button, DialogContent, DialogActions, Grid, MenuItem, Stack,
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Iconify from '../../../components/iconify';
 import moment from 'moment';
-import { fDate } from '../../../utils/formatTime';
-import { AuthContext } from '../../../context/AuthContext';
 import { createEvent, updateEvent } from '../../../services/events/createEvent';
 import { ToastContainer, toast } from 'react-toastify';
 import { deleteEvent } from '../../../services/events/deleteEvent';
@@ -66,8 +63,6 @@ export default function CalendarForm({ event, handleCloseModal, handleDelete }) 
     alertType: event ? event.alertType : 'NONE',
     status: event ? event.status : 'New Task',
   })
-  const { token } = useContext(AuthContext);
-  const [eventColor, setEventColor] = React.useState('#00AB55');
 
   const [allDay, setAllDay] = React.useState(false);
 
@@ -89,7 +84,7 @@ export default function CalendarForm({ event, handleCloseModal, handleDelete }) 
     console.log(eventCur);
     try {
       if (eventCur.id !== null) {
-        updateEvent(eventCur, token)
+        updateEvent(eventCur)
           .then((res) => {
             if (res.responseCode === 200) {
               handleCloseModal("Đã cập nhật event", res.data)
@@ -97,7 +92,7 @@ export default function CalendarForm({ event, handleCloseModal, handleDelete }) 
             else toast.error("Lỗi tạo event");
           })
       } else {
-        createEvent(eventCur, token)
+        createEvent(eventCur)
           .then((res) => {
             if (res.responseCode === 200) {
               handleCloseModal("Đã tạo một event", res.data)
@@ -113,7 +108,7 @@ export default function CalendarForm({ event, handleCloseModal, handleDelete }) 
   const handleDeleteEvent = () => {
     try {
       if (eventCur.id !== null) {
-        deleteEvent(eventCur, token)
+        deleteEvent(eventCur)
           .then((res) => {
             if (res.responseCode === 200) {
               handleDelete(eventCur);

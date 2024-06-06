@@ -1,17 +1,12 @@
 import axios from 'axios';
-import { createAuthHeader } from '../../utils/createAuthHeader';
 
 const request = axios.create({
     baseURL: 'http://localhost:8080',
 });
 
-export const getListEvents = async (data, token) => {
-    const headers = createAuthHeader(token);
+export const getListEvents = async (data) => {
     try {
-        const res = await request.post('/event/list', data,
-            {
-                headers
-            })
+        const res = await request.post('/event/list', data)
             console.log(res.data);
         return res.data
 

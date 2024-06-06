@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { createAuthHeader } from '../../utils/createAuthHeader';
 import moment from 'moment';
 
 const request = axios.create({
@@ -12,13 +11,9 @@ const data = {
     startDate: startToday,
     endDate: endToday
 }
-export const getEventsToday = async (token) => {
-    const headers = createAuthHeader(token);
+export const getEventsToday = async () => {
     try {
-        const res = await request.post('/event/list', data,
-            {
-                headers
-            })
+        const res = await request.post('/event/list', data)
         return res.data
 
     } catch (error) {
@@ -26,13 +21,9 @@ export const getEventsToday = async (token) => {
     }
 }
 
-export const countEventsToday = async (token) => {
-    const headers = createAuthHeader(token);
+export const countEventsToday = async () => {
     try {
-        const res = await request.post('/event/count', data,
-            {
-                headers
-            })
+        const res = await request.post('/event/count', data)
         return res.data
 
     } catch (error) {

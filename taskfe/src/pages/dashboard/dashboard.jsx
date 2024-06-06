@@ -72,7 +72,7 @@ export default function DashboardAppPage() {
 
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Hi, Welcome {user.fullName}!
+          Hi, Welcome
         </Typography>
         <Typography variant="h5" sx={{ mb: 5 }}>
           Today {fDate(new Date())} , you have

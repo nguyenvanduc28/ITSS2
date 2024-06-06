@@ -1,16 +1,11 @@
 import axios from 'axios';
-import { createAuthHeader } from '../../utils/createAuthHeader';
 const request = axios.create({
     baseURL: 'http://localhost:8080',
 });
 
-export const createEvent = async (data, token) => {
-    const headers = createAuthHeader(token);
+export const createEvent = async (data) => {
     try {
-        const res = await request.post('/event', data,
-            {
-                headers
-            })
+        const res = await request.post('/event', data)
         return res.data
 
     } catch (error) {
@@ -18,13 +13,9 @@ export const createEvent = async (data, token) => {
     }
 }
 
-export const updateEvent = async (data, token) => {
-    const headers = createAuthHeader(token);
+export const updateEvent = async (data) => {
     try {
-        const res = await request.post('/event', data,
-            {
-                headers
-            })
+        const res = await request.post('/event', data)
         return res.data
 
     } catch (error) {

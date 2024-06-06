@@ -24,7 +24,6 @@ import { AuthContext } from '../context/AuthContext';
 
 export default function DashboardAppPage() {
   // const theme = useTheme();
-  const {user} = useContext(AuthContext)
   return (
     <>
       <Helmet>
@@ -33,7 +32,7 @@ export default function DashboardAppPage() {
 
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Hi, Welcome {user.fullName}!
+          Hi, Welcome
         </Typography>
         <Typography variant="h5" sx={{ mb: 5 }}>
           Today, you have

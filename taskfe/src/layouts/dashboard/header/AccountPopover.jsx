@@ -45,8 +45,6 @@ export default function AccountPopover() {
     navigate("/login");
     setOpen(null);
   }
-  const {user} = useContext(AuthContext)
-  console.log(user);
   return (
     <>
       <IconButton
@@ -88,11 +86,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {user.fullName}
+            ''
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {user.fullName}
-            {account.isEmailVerified && <CheckCircleIcon sx={{ ml: 1, verticalAlign: 'middle' }} />}
+            ''
           </Typography>
         </Box>
 

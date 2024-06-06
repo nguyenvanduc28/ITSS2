@@ -17,15 +17,11 @@ const navConfig = [
     icon: icon('ic_schedule'),
   },
   {
-    title: 'task',
+    title: 'todo',
     path: '/task',
     icon: icon('ic_task'),
   },
-  {
-    title: 'setting',
-    path: '/setting',
-    icon: icon('ic_dashboard'),
-  },
+
 ];
 
 export default navConfig;

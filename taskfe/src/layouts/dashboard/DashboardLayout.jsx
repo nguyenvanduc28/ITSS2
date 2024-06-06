@@ -41,9 +41,6 @@ const Main = styled('div')(({ theme }) => ({
 
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
-  const {token} = useContext(AuthContext);
-  console.log(token);
-  if(token)
     return (
       <StyledRoot>
         <Header onOpenNav={() => setOpen(true)} />
@@ -53,6 +50,5 @@ export default function DashboardLayout() {
         </Main>
       </StyledRoot>
     );
-  return <Navigate to="/login" />
 
 }

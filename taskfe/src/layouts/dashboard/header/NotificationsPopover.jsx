@@ -47,15 +47,6 @@ const NOTIFICATIONS = [
     createdAt: sub(new Date(), { hours: 12, minutes: 45 }),
     isUnRead: true,
   },
-  // {
-  //   id: faker.datatype.uuid(),
-  //   title: faker.name.fullName(),
-  //   description: 'answered to your comment',
-  //   avatar: '/assets/images/avatars/avatar_2.jpg',
-  //   type: 'friend_cmt',
-  //   createdAt: sub(new Date(), {days: 2,  hours: 3, minutes: 30 }),
-  //   isUnRead: true,
-  // },
   {
     id: faker.datatype.uuid(),
     title: 'You have tasks that are due',
