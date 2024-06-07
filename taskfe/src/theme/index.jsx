@@ -29,7 +29,8 @@ export default function ThemeProvider({ children }) {
       setMode('light')
     }
   }, [])
-  const [mode2, setMode] = useState(localStorage.getItem('theme'));
+  // const [mode2, setMode] = useState(localStorage.getItem('theme'));
+  const [mode2, setMode] = useState('light');
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
