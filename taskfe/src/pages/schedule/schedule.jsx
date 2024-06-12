@@ -207,7 +207,7 @@ export default function Calendar() {
                 startIcon={<Iconify icon={'eva:plus-fill'} width={20} height={20} />}
                 onClick={handleAddEvent}
               >
-                New Task
+                New Schedule
               </Button>
             </Stack>
 

@@ -16,7 +16,7 @@ const StyledTodoItem = styled('div')(({ isCompleted }) => ({
     
     // backgroundColor: isCompleted ? 'lightgreen' : 'white',
     color: isCompleted ? '#d9d9d9' : '#000000de',
-    textDecoration: isCompleted ? 'line-through' : 'none'
+    // textDecoration: isCompleted ? 'line-through' : 'none'
 }))
 
 

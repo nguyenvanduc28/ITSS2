@@ -57,21 +57,21 @@ const Task = () => {
   };
 
   const [listTask, setListTask] = useState([
-    {
-      title: "Làm TodoList",
-      completed: false,
-      date: '2024-06-02 22:25:20',
-    },
-    {
-      title: "Học Tiếng Nhật",
-      completed: false,
-      date: '2024-06-01 12:25:20',
-    },
-    {
-      title: "Học Tiếng Anh",
-      completed: false,
-      date: '2024-06-02 22:50:20',
-    }
+    // {
+    //   title: "Làm TodoList",
+    //   completed: false,
+    //   date: '2024-06-02 22:25:20',
+    // },
+    // {
+    //   title: "Học Tiếng Nhật",
+    //   completed: false,
+    //   date: '2024-06-01 12:25:20',
+    // },
+    // {
+    //   title: "Học Tiếng Anh",
+    //   completed: false,
+    //   date: '2024-06-02 22:50:20',
+    // }
   ])
   const [todoTitle, setTodoTitle] = useState([''])
 
