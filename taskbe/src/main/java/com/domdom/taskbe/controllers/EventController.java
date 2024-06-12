@@ -3,14 +3,10 @@ package com.domdom.taskbe.controllers;
 import com.domdom.taskbe.dtos.EventDto;
 import com.domdom.taskbe.dtos.ResponseObject;
 import com.domdom.taskbe.dtos.TimeRangerDto;
-import com.domdom.taskbe.models.UserEntity;
-import com.domdom.taskbe.repositories.UserRepository;
 import com.domdom.taskbe.services.event.EventService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,20 +15,15 @@ import java.util.List;
 @RequestMapping("/event")
 public class EventController {
     @Autowired
-    private final UserRepository userRepository;
-    @Autowired
     private final EventService eventService;
 
-    public EventController(UserRepository userRepository, EventService eventService) {
-        this.userRepository = userRepository;
+    public EventController(EventService eventService) {
         this.eventService = eventService;
     }
 
     @PostMapping("")
-    public ResponseEntity<ResponseObject> createEvent(@RequestBody @Valid EventDto eventDto, @AuthenticationPrincipal UserDetails userDetails) {
-        String emailUser = userDetails.getUsername();
-        UserEntity userEntity = userRepository.findByEmail(emailUser);
-        EventDto eventDto1 = eventService.createEvent(eventDto, userEntity);
+    public ResponseEntity<ResponseObject> createEvent(@RequestBody @Valid EventDto eventDto) {
+        EventDto eventDto1 = eventService.createEvent(eventDto);
         return ResponseEntity.ok(ResponseObject.builder()
                 .responseCode(200)
                 .message("created event")
@@ -41,10 +32,8 @@ public class EventController {
     }
 
     @PutMapping("")
-    public ResponseEntity<ResponseObject> updateEvent(@RequestBody @Valid EventDto eventDto, @AuthenticationPrincipal UserDetails userDetails) {
-        String emailUser = userDetails.getUsername();
-        UserEntity userEntity = userRepository.findByEmail(emailUser);
-        EventDto eventDto1 = eventService.updateEvent(eventDto, userEntity);
+    public ResponseEntity<ResponseObject> updateEvent(@RequestBody @Valid EventDto eventDto) {
+        EventDto eventDto1 = eventService.updateEvent(eventDto);
         return ResponseEntity.ok(ResponseObject.builder()
                 .responseCode(200)
                 .message("updated event")
@@ -53,10 +42,8 @@ public class EventController {
     }
 
     @DeleteMapping("{eventId}")
-    public ResponseEntity<ResponseObject> deleteEvent(@PathVariable("eventId") int eventId, @AuthenticationPrincipal UserDetails userDetails) {
-        String emailUser = userDetails.getUsername();
-        UserEntity userEntity = userRepository.findByEmail(emailUser);
-        eventService.deleteEventById(eventId, userEntity);
+    public ResponseEntity<ResponseObject> deleteEvent(@PathVariable("eventId") int eventId) {
+        eventService.deleteEventById(eventId);
         return ResponseEntity.ok(ResponseObject.builder()
                 .responseCode(200)
                 .message("deleted event")
@@ -64,10 +51,8 @@ public class EventController {
                 .build());
     }
     @PostMapping("list")
-    public ResponseEntity<ResponseObject> getListEventByStartEndDate(@RequestBody @Valid TimeRangerDto timeRangerDto, @AuthenticationPrincipal UserDetails userDetails) {
-        String emailUser = userDetails.getUsername();
-        UserEntity userEntity = userRepository.findByEmail(emailUser);
-        List<EventDto> eventDtos= eventService.getAllEventByStartEndDate(timeRangerDto.getStartDate(), timeRangerDto.getEndDate(), userEntity);
+    public ResponseEntity<ResponseObject> getListEventByStartEndDate(@RequestBody @Valid TimeRangerDto timeRangerDto) {
+        List<EventDto> eventDtos= eventService.getAllEventByStartEndDate(timeRangerDto.getStartDate(), timeRangerDto.getEndDate());
         return ResponseEntity.ok(ResponseObject.builder()
                 .responseCode(200)
                 .message("success")
@@ -76,10 +61,8 @@ public class EventController {
     }
 
     @PostMapping("/count")
-    public ResponseEntity<ResponseObject> getCountEventByStartEndDate(@RequestBody @Valid TimeRangerDto timeRangerDto, @AuthenticationPrincipal UserDetails userDetails) {
-        String emailUser = userDetails.getUsername();
-        UserEntity userEntity = userRepository.findByEmail(emailUser);
-        long count = eventService.countAllEventyStartEndDate(timeRangerDto.getStartDate(), timeRangerDto.getEndDate(), userEntity);
+    public ResponseEntity<ResponseObject> getCountEventByStartEndDate(@RequestBody @Valid TimeRangerDto timeRangerDto) {
+        long count = eventService.countAllEventyStartEndDate(timeRangerDto.getStartDate(), timeRangerDto.getEndDate());
         return ResponseEntity.ok(ResponseObject.builder()
                 .responseCode(200)
                 .message("success")
