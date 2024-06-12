@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
-import { TextField, Button, DialogContent, DialogActions, Grid, MenuItem, Stack, Tooltip, IconButton, FormControlLabel, Switch } from '@mui/material';
+import { Rating, Typography, TextField, Button, DialogContent, DialogActions, Grid, MenuItem, Stack, Tooltip, IconButton, FormControlLabel, Switch } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers';
@@ -62,6 +62,7 @@ export default function CalendarForm({ event, handleCloseModal, handleDelete }) 
     repeatType: event ? event.repeatType : 'NONE',
     alertType: event ? event.alertType : 'NONE',
     status: event ? event.status : 'New Task',
+    rating: event ? event.rating: 1
   })
 
   const [allDay, setAllDay] = React.useState(false);
@@ -78,6 +79,7 @@ export default function CalendarForm({ event, handleCloseModal, handleDelete }) 
   const handleChangeValue = (key, value) => {
     const eventTmp = { ...eventCur, [key]: value };
     setEventCur(eventTmp);
+    console.log(eventTmp);
   }
 
   const handleSaveEvent = () => {
@@ -229,11 +231,21 @@ export default function CalendarForm({ event, handleCloseModal, handleDelete }) 
               ))}
             </Stack>
           </Grid>
+          <Grid item xs={12} sm={6} md={12}>
+            <Typography component="legend">Độ ưu tiên</Typography>
+            <Rating
+              name="simple-controlled"
+              value={eventCur.rating}
+              onChange={(event, newValue) => {
+                handleChangeValue('rating', newValue)
+              }}
+            />
+          </Grid>
         </Grid>
       </DialogContent>
       <DialogActions sx={{ margin: '24px' }} >
-        {eventCur.id !== null ? <Button variant="outlined" color="error" style={{marginRight:'auto'}} onClick={()=>handleDeleteEvent()}>Delete</Button>:''}
-        <Button variant="outlined" color="error" onClick={()=>handleCloseModal()}>Cancel</Button>
+        {eventCur.id !== null ? <Button variant="outlined" color="error" style={{ marginRight: 'auto' }} onClick={() => handleDeleteEvent()}>Delete</Button> : ''}
+        <Button variant="outlined" color="error" onClick={() => handleCloseModal()}>Cancel</Button>
         <Button variant="outlined" onClick={() => {
           console.log(eventCur)
           handleSaveEvent();

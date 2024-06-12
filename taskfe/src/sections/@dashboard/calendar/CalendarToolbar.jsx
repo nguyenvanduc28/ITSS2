@@ -52,7 +52,10 @@ export default function CalendarToolbar({ date, view, onToday, onNextDate, onPre
               <ToggleButton
                 value={view}
                 selected={viewOption.value === view}
-                onChange={() => onChangeView(viewOption.value)}
+                onChange={() => {
+                  onChangeView(viewOption.value)
+                  console.log(viewOption);
+                }}
                 sx={{ width: 32, height: 32, padding: 0, border: 0 }}
               >
                 <Iconify icon={viewOption.icon} width={20} height={20} />

@@ -7,7 +7,7 @@ import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
 import InputLabel from '@mui/material/InputLabel';
 import { Close } from '@mui/icons-material';
-import { Grid, IconButton, TextField, ToggleButton, Tooltip } from '@mui/material';
+import { Rating, Typography, Grid, IconButton, TextField, ToggleButton, Tooltip } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -70,8 +70,8 @@ export default function TaskDetail({ handleClose, handleOpen, open, data, age1, 
       >
         <Box sx={style}>
           <Typography className="flex justify-between" style={{
-            display:'flex',
-            justifyContent:'space-between'
+            display: 'flex',
+            justifyContent: 'space-between'
           }} id="modal-modal-title" variant="h6" component="h2">
             <div>
               <FormControl sx={{ m: 1, minWidth: 140 }}>
@@ -84,10 +84,10 @@ export default function TaskDetail({ handleClose, handleOpen, open, data, age1, 
                   onOpen={handleOpen1}
                   value={age1}
                   label="Status"
-                  onChange={(event)=>{
+                  onChange={(event) => {
                     handleChange1(event);
                   }}
-                  style={{height: 40}}
+                  style={{ height: 40 }}
                 >
                   <MenuItem value={10}>Submited</MenuItem>
                   <MenuItem value={20}>Completed</MenuItem>
@@ -107,12 +107,12 @@ export default function TaskDetail({ handleClose, handleOpen, open, data, age1, 
             >
               <div className="text-[28px] text-[#48409E]">{data?.title}</div>
               <div>
-              <IconButton
-                sx={{ width: 13, height: 13, marginRight: '4px', padding: 0, border: 0, borderRadius: '50%', backgroundColor: `${data?.color}` }}
-              />
-              <span style={{fontWeight:200, fontSize:'14px'}}>{}</span>
+                <IconButton
+                  sx={{ width: 13, height: 13, marginRight: '4px', padding: 0, border: 0, borderRadius: '50%', backgroundColor: `${data?.color}` }}
+                />
+                <span style={{ fontWeight: 200, fontSize: '14px' }}>{ }</span>
               </div>
-              
+
             </Typography>
 
             <Typography className="px-[16px]" id="modal-modal-description" sx={{ mt: 2 }}>
@@ -151,6 +151,13 @@ export default function TaskDetail({ handleClose, handleOpen, open, data, age1, 
                     fullWidth
                     value={data?.description}
                     disabled={true}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} md={12}>
+                  <Typography component="legend">Độ ưu tiên</Typography>
+                  <Rating
+                    name="simple-controlled"
+                    value={data?.rating}
                   />
                 </Grid>
               </Grid>

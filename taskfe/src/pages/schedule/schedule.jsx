@@ -7,7 +7,9 @@ import interactionPlugin from '@fullcalendar/interaction';
 //
 import { useState, useRef, useEffect, useContext } from 'react';
 // @mui
-import { Card, Button, Container, DialogTitle, DialogActions, Stack } from '@mui/material';
+import { Button, Container, DialogTitle, DialogActions, Stack, Rating, IconButton, List, ListItemText, ListItem, Grid, Typography, Card, ListItemIcon } from '@mui/material';
+import CommentIcon from '@mui/icons-material/Comment';
+
 import useResponsive from '../../hooks/useResponsive';
 
 // components
@@ -19,7 +21,7 @@ import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 // // sections
 import { CalendarForm, CalendarStyle, CalendarToolbar } from '../../sections/@dashboard/calendar';
 import events from '../../_mock/events';
-import { getListEvents } from '../../services/events/getListEvent';
+import { getListEventPriority, getListEvents } from '../../services/events/getListEvent';
 import moment from 'moment';
 import { AuthContext } from '../../context/AuthContext';
 import { ToastContainer, toast } from 'react-toastify';
@@ -69,6 +71,7 @@ const COLOR_OPTIONS = [
 export default function Calendar() {
 
   const [event, setEvent] = useState();
+  const [eventPriority, setEventPriority] = useState([]);
 
   const [open, setOpen] = useState(false);
 
@@ -102,9 +105,22 @@ export default function Calendar() {
       endDate: endDate
     }
     try {
-      const res = await getListEvents(data, token);
+      const res = await getListEvents(data);
       if (res.responseCode === 200) {
         setEvent(res.data);
+      } else {
+        toast.error(res.response.data.message)
+      }
+    } catch (error) { }
+  };
+
+  const fetchDataPriority = async () => {
+
+    try {
+      const res = await getListEventPriority();
+      if (res.responseCode === 200) {
+        console.log('schedue', res.data);
+        setEventPriority(res.data);
       } else {
         toast.error(res.response.data.message)
       }
@@ -124,11 +140,16 @@ export default function Calendar() {
   };
 
   const handleChangeView = (newView) => {
+
     const calendarEl = calendarRef.current;
+    console.log('calendarRef', calendarRef);
     if (calendarEl) {
       const calendarApi = calendarEl.getApi();
       calendarApi.changeView(newView);
       setView(newView);
+      if (newView == 'listWeek') {
+        fetchDataPriority();
+      }
     }
   };
 
@@ -224,6 +245,48 @@ export default function Calendar() {
               onToday={handleClickToday}
               onChangeView={handleChangeView}
             />
+            {view != 'listWeek' ?
+              '' :
+
+              <Container maxWidth="xl">
+                <Grid container spacing={2}>
+
+                  <Grid item xs={12} md={12} lg={12} >
+                    <Typography variant="h6" sx={{ mb: 1 }}>
+                      Danh sách ưu tiên:
+                    </Typography>
+                    <List sx={{ width: '100%', bgcolor: 'background.paper', paddingLeft: '20px' }}>
+                      {eventPriority.map((value) => (
+                        <ListItem key={value} alignItems='start' disableGutters secondaryAction={
+                          <Rating
+                            name="simple-controlled"
+                            value={value.rating}
+                          />
+                        }>
+                          <ListItemIcon>
+                            <IconButton
+                              value={value.color}
+                              sx={{ width: 10, height: 10, padding: 0, border: 0, borderRadius: '50%', background: value.color }}
+                            >
+
+                            </IconButton>
+                          </ListItemIcon>
+                          <ListItemIcon sx={{ minWidth: '160px' }}>
+
+                            {moment(value.start).format("hh:mm - DD/MM/YYYY")}
+                          </ListItemIcon>
+                          <ListItemText>
+                            {value.title}
+                          </ListItemText>
+                        </ListItem>
+                      ))}
+                    </List>
+
+                  </Grid>
+                </Grid>
+              </Container>
+            }
+
             <FullCalendar
               weekends
               editable
@@ -240,25 +303,18 @@ export default function Calendar() {
               allDayMaintainDuration
               eventResizableFromStart
               eventClick={handleSelectEvent}
-              // select={handleSelectEvent}
-              // eventDrop={handleDropEvent}
-              // eventResize={handleResizeEvent}
-              height={isDesktop ? 720 : 'auto'}
+              height={view == 'listWeek' ? 0 : isDesktop ? 720 : 'auto'}
               plugins={[listPlugin, dayGridPlugin, timelinePlugin, timeGridPlugin, interactionPlugin]}
             />
           </CalendarStyle>
         </Card>
 
         {/* Add event model */}
-        <DialogAnimate open={open} onClose={()=>handleCloseModal()} >
+        <DialogAnimate open={open} onClose={() => handleCloseModal()} >
           <DialogTitle variant='h3' sx={{ fontStyle: 'normal', color: '#48409E', }}>
             {selectedEvent != null && 'Event detail' || 'New event'}
           </DialogTitle>
-          <CalendarForm event={selectedEvent} handleCloseModal={handleCloseModal} handleDelete={handleDelete}/>
-          {/* <DialogActions sx={{ margin: '24px'}} >
-            <Button variant="outlined" color="error" autoFocus onClick={handleCloseModal}>Cancel</Button>
-            <Button variant="outlined" onClick={()=>console.log(selectedEvent)}>Save change</Button>
-          </DialogActions> */}
+          <CalendarForm event={selectedEvent} handleCloseModal={handleCloseModal} handleDelete={handleDelete} />
         </DialogAnimate>
 
       </Container>

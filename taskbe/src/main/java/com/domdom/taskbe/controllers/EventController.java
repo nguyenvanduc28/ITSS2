@@ -69,4 +69,13 @@ public class EventController {
                 .data(count)
                 .build());
     }
+    @GetMapping("/priority")
+    public ResponseEntity<ResponseObject> getEventsByPriority() {
+        List<EventDto> eventDtos= eventService.getAllEventByPriority();
+        return ResponseEntity.ok(ResponseObject.builder()
+                .responseCode(200)
+                .message("success")
+                .data(eventDtos)
+                .build());
+    }
 }

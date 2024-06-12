@@ -28,4 +28,5 @@ public class EventDto {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private String color;
+    private int rating;
 }

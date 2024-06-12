@@ -1,10 +1,11 @@
 import FullCalendar from '@fullcalendar/react'; // => request placed at the top
 import listPlugin from '@fullcalendar/list';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
+import CommentIcon from '@mui/icons-material/Comment';
 import { Helmet } from 'react-helmet-async';
 // import { faker } from '@faker-js/faker';
 // @mui
-import { Grid, Container, Typography, Card } from '@mui/material';
+import { IconButton, List, ListItemText, ListItem, Grid, Container, Typography, Card } from '@mui/material';
 // components
 import Iconify from '../../components/iconify';
 import account from '../../_mock/account';
@@ -72,18 +73,22 @@ export default function DashboardAppPage() {
 
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Hi, Welcome
-        </Typography>
-        <Typography variant="h5" sx={{ mb: 5 }}>
-          Today {fDate(new Date())} , you have
+          {fDate(new Date())}, Hi Welcome
         </Typography>
 
+
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={3} md={6}>
+          <Grid item xs={12} sm={4} md={4}>
+            <Typography variant="h6" sx={{ mb: 4 }}>
+              Số task hôm nay:
+            </Typography>
             <AppWidgetSummary title="Schedule" total={totalEvent} icon={'bi:calendar-week'} />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={5} >
+          <Grid item xs={12} md={6} lg={6} >
+            <Typography variant="h6" sx={{ mb: 4 }}>
+              Danh sách task hôm nay:
+            </Typography>
             <Card sx={{ height: '100%', paddingTop: '46px' }}>
               {/* <CustomizedTimeline /> */}
               <Timeline position="alternate">
@@ -104,6 +109,7 @@ export default function DashboardAppPage() {
               </Timeline>
             </Card>
           </Grid>
+
 
           {/* <Grid item xs={12} md={12} lg={12}>
             <AppWebsiteVisits

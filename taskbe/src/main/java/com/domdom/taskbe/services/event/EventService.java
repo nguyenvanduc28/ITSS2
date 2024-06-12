@@ -45,6 +45,12 @@ public class EventService {
         return Arrays.asList(modelMapper.map(events, EventDto[].class));
     }
 
+    public List<EventDto> getAllEventByPriority(){
+        List<Event> events = eventRepository.findAllByPriority();
+        if (events == null) throw new BadRequestException("Lỗi lấy danh sách event");
+        return Arrays.asList(modelMapper.map(events, EventDto[].class));
+    }
+
     public long countAllEventyStartEndDate(long startDate, long endDate) {
         long count = eventRepository.count(startDate, endDate);
         return count;
