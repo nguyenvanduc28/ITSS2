@@ -26,5 +26,6 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
 
     @Query(value = "SELECT COUNT(*) FROM event WHERE start >= :startDate and end <= :endDate and is_deleted = false", nativeQuery = true)
     long count(@Param("startDate") long startDate, @Param("endDate") long endDate);
-
+    @Query(value = "SELECT * FROM event WHERE start >= :startDate and noti = true and is_deleted = false", nativeQuery = true)
+    List<Event> findAllByStartDate(@Param("startDate") long startDate);
 }

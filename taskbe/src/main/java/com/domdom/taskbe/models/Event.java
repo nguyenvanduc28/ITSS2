@@ -35,4 +35,7 @@ public class Event extends BaseEntity{
     private boolean isDeleted;
     private String color;
     private int rating;
+    private String email;
+    @Column(name = "noti", columnDefinition = "boolean default false")
+    private boolean noti;
 }

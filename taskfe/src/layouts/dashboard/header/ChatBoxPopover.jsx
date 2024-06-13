@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, List, ListItem, ListItemAvatar, ListItemText, Typography, IconButton, Popover } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
@@ -14,12 +14,6 @@ const chatItems = [
     question: 'How can I reset my password?',
     answer: 'To reset your password, go to the "Forgot Password" page and follow the instructions.',
   },
-  {
-    id: 2,
-    question: 'How to update the status of tasks?',
-    answer: 'Go to the Task section then select the task that needs to be updated and update it',
-  },
-  // Add more chat items here
 ];
 
 const StyledList = styled(List)(({ theme }) => ({
@@ -34,7 +28,12 @@ const StyledList = styled(List)(({ theme }) => ({
 
 const ChatFAQ = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [eventList, setEventList] = useState([]);
+  const [eventNoti, setEventNoti] = useState([]);
 
+  useEffect(()=>{
+    
+  }, []);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -50,7 +49,8 @@ const ChatFAQ = () => {
     <Box>
       <IconButton onClick={handleClick}>
         {/* {open ? <ExpandLessIcon sx={{ fontSize: '30px' }} /> : <ExpandMoreIcon sx={{ fontSize: '30px' }} />} */}
-        <Iconify icon="flat-color-icons:faq" sx={{ fontSize: '30px' }}/>
+        {/* <Iconify icon="octicon:bell-fill-16" sx={{ fontSize: '30px' }}/> */}
+        <Iconify icon="octicon:bell-16" sx={{ fontSize: '30px' }}/>
       </IconButton>
 
       <Popover
@@ -69,7 +69,7 @@ const ChatFAQ = () => {
       >
         <Box p={2}>
           <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
-            Chat FAQs
+            Notification
           </Typography>
 
           <StyledList>

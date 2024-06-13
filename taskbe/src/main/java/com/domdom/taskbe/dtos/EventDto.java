@@ -29,4 +29,6 @@ public class EventDto {
     private Timestamp updatedAt;
     private String color;
     private int rating;
+    private String email;
+    private boolean noti;
 }

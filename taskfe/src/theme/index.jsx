@@ -21,14 +21,17 @@ export const ColorModeContext = React.createContext({ toggleColorMode: () => { }
 
 export default function ThemeProvider({ children }) {
   useEffect(() => {
-    if (localStorage.getItem('theme')) {
-      console.log("useEfeect", localStorage.getItem('theme'));
-      setMode(localStorage.getItem('theme'))
+    const theme = localStorage.getItem('theme');
+    if (theme) {
+        console.log("useEffect", theme);
+        setMode(theme);
     } else {
-      localStorage.setItem('theme', 'light');
-      setMode('light')
+        const defaultTheme = 'light';
+        localStorage.setItem('theme', defaultTheme);
+        setMode(defaultTheme);
     }
-  }, [])
+}, []);
+
   // const [mode2, setMode] = useState(localStorage.getItem('theme'));
   const [mode2, setMode] = useState('light');
   const colorMode = useMemo(

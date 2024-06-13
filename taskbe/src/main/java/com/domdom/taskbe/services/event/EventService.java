@@ -55,4 +55,5 @@ public class EventService {
         long count = eventRepository.count(startDate, endDate);
         return count;
     }
+
 }

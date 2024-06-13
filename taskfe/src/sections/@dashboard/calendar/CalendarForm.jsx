@@ -62,13 +62,22 @@ export default function CalendarForm({ event, handleCloseModal, handleDelete }) 
     repeatType: event ? event.repeatType : 'NONE',
     alertType: event ? event.alertType : 'NONE',
     status: event ? event.status : 'New Task',
-    rating: event ? event.rating: 1
+    rating: event ? event.rating : 1,
+    email: event ? event.email : '',
+    noti: event ? event.noti : false,
+    
   })
+  const [noti, setNoti] = React.useState(false);
 
   const [allDay, setAllDay] = React.useState(false);
 
   const onClickAllDay = () => {
     const eventTmp = { ...eventCur, allDay: !allDay };
+    setEventCur(eventTmp);
+  }
+  const onClickNoti = () => {
+    const eventTmp = { ...eventCur, noti: !noti };
+    setNoti(!noti);
     setEventCur(eventTmp);
   }
 
@@ -141,6 +150,23 @@ export default function CalendarForm({ event, handleCloseModal, handleDelete }) 
 
           <Grid item xs={12} sm={6} md={12} >
             <FormControlLabel control={<Switch />} label="All day" labelPlacement="start" onClick={onClickAllDay} />
+          </Grid>
+          <Grid item xs={12} sm={6} md={12} >
+            <FormControlLabel checked={eventCur.noti} control={<Switch />} label="Nhận thông báo" labelPlacement="start" onClick={onClickNoti} />
+            {
+              eventCur.noti &&
+              <>
+                <TextField
+                  required
+                  id="outlined-required"
+                  label="Email"
+                  defaultValue={eventCur.email}
+                  fullWidth
+                  onChange={(event) => handleChangeValue('email', event.target.value)}
+                />
+                Thông báo sẽ được gửi qua email trước 30 phút
+              </>
+            }
           </Grid>
 
           <Grid item xs={12} sm={6} md={6}>
@@ -216,7 +242,7 @@ export default function CalendarForm({ event, handleCloseModal, handleDelete }) 
           </Grid>
 
           <Grid item xs={12} sm={6} md={12}>
-
+            <Typography component="legend">Danh mục</Typography>
             <Stack direction="row" spacing={0.5}>
               {COLOR_OPTIONS.map((option) => (
                 <Tooltip key={option.label} title={option.label}>
