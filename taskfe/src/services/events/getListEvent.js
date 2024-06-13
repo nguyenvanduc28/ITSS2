@@ -25,3 +25,14 @@ export const getListEventPriority = async () => {
         console.log('getListEventPriority ' + error)
     }
 }
+
+export const getListEventNoti = async () => {
+    try {
+        const res = await request.get('/event/noti')
+        console.log('noti',res.data);
+        return res.data
+
+    } catch (error) {
+        console.log('getListEventNoti ' + error)
+    }
+}

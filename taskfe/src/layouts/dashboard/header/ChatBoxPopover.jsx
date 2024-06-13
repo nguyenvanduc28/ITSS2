@@ -1,43 +1,73 @@
 import React, { useEffect, useState } from 'react';
-import { Box, List, ListItem, ListItemAvatar, ListItemText, Typography, IconButton, Popover } from '@mui/material';
+import { Box, List, ListItem, ListItemAvatar, ListItemText, Rating, Typography, IconButton, Popover, ListItemIcon } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import ChatIcon from '@mui/icons-material/Chat';
 // import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 // import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Iconify from '../../../components/iconify';
-
-
-const chatItems = [
-  {
-    id: 1,
-    question: 'How can I reset my password?',
-    answer: 'To reset your password, go to the "Forgot Password" page and follow the instructions.',
-  },
-];
-
-const StyledList = styled(List)(({ theme }) => ({
-  '& .MuiListItem-root': {
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    padding: theme.spacing(2),
-    '&:last-child': {
-      borderBottom: 'none',
-    },
-  },
-}));
+import { getListEventNoti } from '../../../services/events/getListEvent';
+import moment from 'moment';
 
 const ChatFAQ = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [eventList, setEventList] = useState([]);
-  const [eventNoti, setEventNoti] = useState([]);
+  const [eventList, setEventList] = useState(() => {
+    const savedEvents = localStorage.getItem('eventList');
+    return savedEvents ? JSON.parse(savedEvents) : [];
+  });
 
-  useEffect(()=>{
-    
+  useEffect(() => {
+    const savedEvents = localStorage.getItem('eventList');
+    savedEvents ? JSON.parse(savedEvents) : localStorage.setItem('eventList', '[]');
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchDataNoti();
+    }, 60000);
+    return () => clearInterval(interval);
   }, []);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  const handleReadEvent = (eventT) => {
+    let eventTmp = eventList.map((event) => {
+      if (event.id === eventT.id) {
+        return {
+          ...event,
+          isReaded: true
+        };
+      } else {
+        return event;
+      }
+    });
 
+    setEventList(eventTmp);
+    localStorage.setItem('eventList', JSON.stringify(eventTmp));
+  };
+
+  const fetchDataNoti = async () => {
+    try {
+      const res = await getListEventNoti();
+      if (res.responseCode === 200) {
+        if (res.data.length > 0) {
+          let eventsNoti = res.data.map((event) => {
+            return {
+              ...event,
+              isReaded: false
+            };
+          });
+
+          const eventListTmp = [
+            ...eventsNoti, ...eventList
+          ]
+
+          setEventList(eventListTmp);
+          localStorage.setItem('eventList', JSON.stringify(eventListTmp));
+        }
+      }
+    } catch (error) { }
+  };
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -49,8 +79,11 @@ const ChatFAQ = () => {
     <Box>
       <IconButton onClick={handleClick}>
         {/* {open ? <ExpandLessIcon sx={{ fontSize: '30px' }} /> : <ExpandMoreIcon sx={{ fontSize: '30px' }} />} */}
-        {/* <Iconify icon="octicon:bell-fill-16" sx={{ fontSize: '30px' }}/> */}
-        <Iconify icon="octicon:bell-16" sx={{ fontSize: '30px' }}/>
+        {eventList.some((item) => item.isReaded == false) ?
+          <Iconify icon="octicon:bell-fill-16" sx={{ fontSize: '30px' }} />
+          :
+          <Iconify icon="octicon:bell-16" sx={{ fontSize: '30px' }} />
+        }
       </IconButton>
 
       <Popover
@@ -72,21 +105,33 @@ const ChatFAQ = () => {
             Notification
           </Typography>
 
-          <StyledList>
-            {chatItems.map((item) => (
-              <ListItem key={item.id}>
-                <ListItemAvatar>
-                  <Avatar>
-                    <ChatIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={item.question}
-                  secondary={item.answer}
+          <List sx={{ width: '600px', bgcolor: 'background.paper', paddingLeft: '20px' }}>
+            {eventList.map((value) => (
+              <ListItem key={value} onClick={() => handleReadEvent(value)} sx={{ background: value.isReaded ? 'white' : '#f5f3f3', borderBottom: '1px solid white', paddingLeft: '10px', paddingRight: '10px' }} disableGutters secondaryAction={
+                <Rating
+                  disabled
+                  name="simple-controlled"
+                  value={value.rating}
                 />
+              }>
+                <ListItemIcon>
+                  <IconButton
+                    value={value.color}
+                    sx={{ width: 10, height: 10, padding: 0, border: 0, borderRadius: '50%', background: value.color }}
+                  >
+
+                  </IconButton>
+                </ListItemIcon>
+                <ListItemIcon sx={{ minWidth: '160px' }}>
+
+                  {moment(value.start).format("hh:mm - DD/MM/YYYY")}
+                </ListItemIcon>
+                <ListItemText>
+                  {value.title}
+                </ListItemText>
               </ListItem>
             ))}
-          </StyledList>
+          </List>
         </Box>
       </Popover>
     </Box>

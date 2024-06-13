@@ -8,6 +8,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -55,5 +59,17 @@ public class EventService {
         long count = eventRepository.count(startDate, endDate);
         return count;
     }
-
+    public List<EventDto> getAllEventNoti(){
+        ZoneId zoneId = ZoneId.of("Asia/Ho_Chi_Minh");
+        LocalDateTime now = LocalDateTime.now(zoneId);
+        long startDate = now.toEpochSecond(ZoneOffset.ofHours(7)) * 1000 + 30*60000;
+        List<Event> events = eventRepository.findAllByStartDate(startDate);
+        List<Event> events1 = new ArrayList<>();
+        for (Event event : events) {
+            if ((event.getStart() - startDate) / 60000 == 0) {
+                events1.add(event);
+            }
+        }
+        return Arrays.asList(modelMapper.map(events1, EventDto[].class));
+    }
 }

@@ -78,4 +78,13 @@ public class EventController {
                 .data(eventDtos)
                 .build());
     }
+    @GetMapping("/noti")
+    public ResponseEntity<ResponseObject> getEventsNoti() {
+        List<EventDto> eventDtos= eventService.getAllEventNoti();
+        return ResponseEntity.ok(ResponseObject.builder()
+                .responseCode(200)
+                .message("success")
+                .data(eventDtos)
+                .build());
+    }
 }
