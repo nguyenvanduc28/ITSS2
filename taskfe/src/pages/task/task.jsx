@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { Box,  Typography, Container, DialogTitle, TextField, Dialog, DialogContent, DialogActions } from '@mui/material'
 import HeaderBreadcrumbs from "../../components/HeaderBreadcrumbs";
 import Page from "../../components/Page"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Empty } from 'antd'
 import moment from 'moment';
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -56,23 +57,21 @@ const Task = () => {
     setTodoTitle('')
   };
 
-  const [listTask, setListTask] = useState([
-    // {
-    //   title: "Làm TodoList",
-    //   completed: false,
-    //   date: '2024-06-02 22:25:20',
-    // },
-    // {
-    //   title: "Học Tiếng Nhật",
-    //   completed: false,
-    //   date: '2024-06-01 12:25:20',
-    // },
-    // {
-    //   title: "Học Tiếng Anh",
-    //   completed: false,
-    //   date: '2024-06-02 22:50:20',
-    // }
-  ])
+  const [listTask, setListTask] = useState([])
+  const [isEmpty, setIsEmpty] = useState(true)
+
+  useEffect(() => {
+    const storedTasks = JSON.parse(localStorage.getItem('listTask'));
+    if(localStorage.getItem('listTask')) {
+      setListTask(storedTasks);
+      setIsEmpty(storedTasks.length === 0);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('listTask', JSON.stringify(listTask));
+    setIsEmpty(listTask.length === 0);
+  }, [listTask])
   const [todoTitle, setTodoTitle] = useState([''])
 
   const handleTaskCompleted = (index) => {
@@ -95,6 +94,11 @@ const Task = () => {
     handleCloseModal();
   }
 
+  const handleDeleteTask = (index) => {
+    const updatedList = listTask.filter((task, i) => i !== index)
+    setListTask(updatedList);
+  }
+
   const groupTasksByDate = (tasks) => {
     return tasks.reduce((groups, task) => {
       const date = moment(task.date).format('YYYY-MM-DD');
@@ -110,11 +114,13 @@ const Task = () => {
       return groups;
     }, {});
   };
+
+  
   
   const [valueDate, setValueData] = useState(dayjs(moment().valueOf()));
   const groupedTasks = groupTasksByDate(listTask);
   const sortedDates = Object.keys(groupedTasks).sort((a, b) => moment(b).diff(moment(a))); // sắp xếp theo ngày giảm dần
-
+  const totalCompletedTasks = listTask.filter(task => task.completed).length;
   return (
     <Page title="Task">
       <Container >
@@ -133,28 +139,31 @@ const Task = () => {
           }
         />
           {
-            sortedDates.map((date, index) => (
-              <div key={index}>
-                 <h4 style={{ margin: 0 }}>{moment(date).format('dddd, D MMM YYYY')}</h4>
-                 {groupedTasks[date].map((task, i) => (
-                   <TodoItem
-                     key={i}
-                     task={task}
-                     index={listTask.indexOf(task)}
-                     handleTaskCompleted={handleTaskCompleted}
-                   />
-                 ))}
-               </div>
-            ))
+            isEmpty ? 
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}></Empty> : 
+              sortedDates.map((date, index) => (
+                <div key={index}>
+                  <h4 style={{ margin: 0 }}>{moment(date).format('dddd, D MMM YYYY')}</h4>
+                  {groupedTasks[date].map((task, i) => (
+                    <TodoItem
+                      key={i}
+                      task={task}
+                      index={listTask.indexOf(task)}
+                      handleTaskCompleted={handleTaskCompleted}
+                      handleDeleteTask = {handleDeleteTask}
+                    />
+                  ))}
+                </div>
+              ))
           }
-
-        <div style={{position: 'absolute', bottom: '10px', fontWeight: '600'}}><span style={{marginRight: '4px'}}>Total completed task:</span> 
-            {
-              listTask.filter((task) => {
-                return task.completed
-              }).length
-            }
-        </div>
+          {
+            !isEmpty && (
+              <div  style={{position: 'absolute', bottom: '10px', fontWeight: '600'}}>
+                <span style={{marginRight: '4px'}}>Total completed task:</span>
+                {totalCompletedTasks}
+              </div>
+            )
+          }
         
       </Container>
 
