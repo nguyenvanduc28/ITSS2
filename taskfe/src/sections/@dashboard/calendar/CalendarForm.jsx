@@ -58,7 +58,7 @@ export default function CalendarForm({ event, handleCloseModal, handleDelete }) 
     color: event ? event.color : '#00AB55',
     allDay: event ? event.allDay : false,
     start: event ? moment(event.start).valueOf() : moment().valueOf(),
-    end: event ? moment(event.end).valueOf() : moment().add('hours', 1).valueOf(),
+    endd: event ? moment(event.endd).valueOf() : moment().add('hours', 1).valueOf(),
     repeatType: event ? event.repeatType : 'NONE',
     alertType: event ? event.alertType : 'NONE',
     status: event ? event.status : 'New Task',
@@ -187,10 +187,10 @@ export default function CalendarForm({ event, handleCloseModal, handleDelete }) 
 
               <DateTimePicker
                 label="Ending date"
-                defaultValue={dayjs(eventCur.end)}
+                defaultValue={dayjs(eventCur.endd)}
                 sx={{ width: '100%' }}
                 onChange={(value) => {
-                  handleChangeValue('end', moment(value.$d).valueOf())
+                  handleChangeValue('endd', moment(value.$d).valueOf())
                 }}
               />
             </LocalizationProvider>

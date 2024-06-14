@@ -40,7 +40,7 @@ const TaskItem = ({ data, show }) => {
           <Typography className="flex justify-between items-center" variant="body2" color="text.secondary">
             <div className="flex items-center leading-[30px] text-[#FF7979]">
               <p className="m-[0px] leading-[30px]">start: {moment(data.start).format('hh:mm DD-MM-YYYY')}</p>
-              <p className="m-[0px] leading-[30px]">deadline: {moment(data.end).format('hh:mm DD-MM-YYYY')}</p>
+              <p className="m-[0px] leading-[30px]">deadline: {moment(data.endd).format('hh:mm DD-MM-YYYY')}</p>
             </div>
           </Typography>
           <Typography className="flex justify-between items-center" variant="body2" color="text.secondary">

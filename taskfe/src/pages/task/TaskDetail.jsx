@@ -134,7 +134,7 @@ export default function TaskDetail({ handleClose, handleOpen, open, data, age1, 
                     <DateTimePicker
                       disabled={true}
                       label="Ending date"
-                      defaultValue={moment(data?.end)}
+                      defaultValue={moment(data?.endd)}
                       sx={{
                         width: '100%',
                       }}

@@ -2,7 +2,7 @@ import axios from 'axios';
 import moment from 'moment';
 
 const request = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: 'https://itss2-be-5617.onrender.com',
 });
 
 const startToday = moment().startOf('day').valueOf();

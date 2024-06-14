@@ -101,7 +101,7 @@ export default function DashboardAppPage() {
                   eventsToday.map((event, index) => (
                     <CustomizedTimeline
                       index={index}
-                      time={moment(event.start).format("hh:mm") + " - " + moment(event.end).format("hh:mm")}
+                      time={moment(event.start).format("hh:mm") + " - " + moment(event.endd).format("hh:mm")}
                       icon={<FastfoodIcon />}
                       title={event.title}
                       content={event.descripton} />
@@ -109,37 +109,6 @@ export default function DashboardAppPage() {
               </Timeline>
             </Card>
           </Grid>
-
-
-          {/* <Grid item xs={12} md={12} lg={12}>
-            <AppWebsiteVisits
-              title="Schedule"
-              subheader="(-30%) than last week"
-              chartLabels={[
-                'Monday',
-                'Tuesday',
-                'Wednesday',
-                'Thusday',
-                'Friday',
-                'Saturday',
-                'Sunday'
-              ]}
-              chartData={[
-                {
-                  name: 'Current week',
-                  type: 'area',
-                  fill: 'gradient',
-                  data: [8, 8.5, 9, 8.25, 7.5],
-                },
-                {
-                  name: 'Last week',
-                  type: 'area',
-                  fill: 'gradient',
-                  data: [8.5, 9.5, 9.25, 9, 8.5, 8, 7],
-                },
-              ]}
-            />
-          </Grid> */}
         </Grid>
       </Container>
     </>
