@@ -34,7 +34,7 @@ import { ToastContainer, toast } from 'react-toastify';
 // ----------------------------------------------------------------------
 const COLOR_OPTIONS = [
   {
-    label: 'None',
+    label: 'Tất cả',
     color: '#fff'
   },
   {
@@ -71,6 +71,7 @@ const COLOR_OPTIONS = [
 export default function Calendar() {
 
   const [event, setEvent] = useState();
+  const [eventDefault, setEventDefault] = useState();
   const [eventPriority, setEventPriority] = useState([]);
 
   const [open, setOpen] = useState(false);
@@ -108,6 +109,7 @@ export default function Calendar() {
       const res = await getListEvents(data);
       if (res.responseCode === 200) {
         setEvent(res.data);
+        setEventDefault(res.data);
       } else {
         toast.error(res.response.data.message)
       }
@@ -187,6 +189,7 @@ export default function Calendar() {
       toast.success(messageToast);
       const newListEvent = event.filter((item) => item.id != eventNew.id);
       setEvent([...newListEvent, eventNew]);
+      setEventDefault([...newListEvent, eventNew]);
 
     }
     setOpen(false);
@@ -196,6 +199,7 @@ export default function Calendar() {
     toast.success("Đã xóa event");
     const newListEvent = event.filter((item) => item.id != eventDelete.id);
     setEvent([...newListEvent]);
+    setEventDefault([...newListEvent]);
     setOpen(false);
   }
 
@@ -209,7 +213,7 @@ export default function Calendar() {
   const filter = (color) => {
 
     setEvent(event.filter((event) => (event.color === color)));
-    if (color === '#fff') setEvent(event);
+    if (color === '#fff') setEvent(eventDefault);
   };
 
   return (
